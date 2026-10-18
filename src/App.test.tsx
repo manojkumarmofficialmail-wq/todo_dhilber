@@ -104,6 +104,22 @@ describe('Due dates', () => {
     expect(screen.queryByText('Someday task')).not.toBeInTheDocument();
   });
 
+  it('gives tasks added on the Today tab a due date of today, and not elsewhere', async () => {
+    render(<App />);
+    await addTask('Undated');
+    await userEvent.click(screen.getByRole('button', { name: /^Today/ }));
+    expect(screen.queryByText('Undated')).not.toBeInTheDocument();
+
+    expect(screen.getByLabelText('New task')).toHaveAttribute('placeholder', 'Add a task for today');
+    await addTask('Do it today');
+    const item = screen.getByText('Do it today').closest('li')!;
+    expect(within(item).getByText('Today')).toBeInTheDocument();
+
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)!);
+    expect(saved.find((t: { text: string }) => t.text === 'Undated')).not.toHaveProperty('dueDate');
+    expect(saved.find((t: { text: string }) => t.text === 'Do it today').dueDate).toBe(today);
+  });
+
   it('marks past dates as overdue and keeps them in Today until done', async () => {
     render(<App />);
     await addTask('Late task');

@@ -4,11 +4,14 @@ import { CalendarIcon, DueDatePicker } from './DueDatePicker';
 
 interface Props {
   onAdd: (text: string, dueDate?: string) => void;
+  /** Used when no date is picked, e.g. today's date while the Today tab is open. */
+  defaultDueDate?: string;
 }
 
-export function TodoInput({ onAdd }: Props) {
+export function TodoInput({ onAdd, defaultDueDate }: Props) {
   const [text, setText] = useState('');
-  const [dueDate, setDueDate] = useState<string | undefined>();
+  const [pickedDate, setDueDate] = useState<string | undefined>();
+  const dueDate = pickedDate ?? defaultDueDate;
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -24,7 +27,7 @@ export function TodoInput({ onAdd }: Props) {
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="What needs to be done?"
+        placeholder={defaultDueDate ? 'Add a task for today' : 'What needs to be done?'}
         aria-label="New task"
         autoFocus
       />

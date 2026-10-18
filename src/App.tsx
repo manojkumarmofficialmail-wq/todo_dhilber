@@ -10,7 +10,7 @@ import './App.css';
 
 const EMPTY_HINTS: Record<Filter, string> = {
   all: 'Add a task above to get started.',
-  today: 'Nothing due today. Use the calendar button to set due dates.',
+  today: 'Tasks you add here are due today.',
   active: 'Everything is done. Nice work!',
   completed: 'Completed tasks will show up here.',
 };
@@ -68,7 +68,7 @@ export default function App() {
           </div>
         )}
 
-        <TodoInput onAdd={addTodo} />
+        <TodoInput onAdd={addTodo} defaultDueDate={filter === 'today' ? today : undefined} />
         <TodoList
           todos={visible}
           emptyHint={EMPTY_HINTS[filter]}
