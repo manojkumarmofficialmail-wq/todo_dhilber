@@ -4,17 +4,26 @@ interface Props {
   filter: Filter;
   onChange: (filter: Filter) => void;
   activeCount: number;
+  todayCount: number;
   hasCompleted: boolean;
   onClearCompleted: () => void;
 }
 
 const FILTERS: { value: Filter; label: string }[] = [
   { value: 'all', label: 'All' },
+  { value: 'today', label: 'Today' },
   { value: 'active', label: 'Active' },
   { value: 'completed', label: 'Completed' },
 ];
 
-export function FilterBar({ filter, onChange, activeCount, hasCompleted, onClearCompleted }: Props) {
+export function FilterBar({
+  filter,
+  onChange,
+  activeCount,
+  todayCount,
+  hasCompleted,
+  onClearCompleted,
+}: Props) {
   return (
     <footer className="filter-bar">
       <span className="count">
@@ -29,6 +38,7 @@ export function FilterBar({ filter, onChange, activeCount, hasCompleted, onClear
             onClick={() => onChange(value)}
           >
             {label}
+            {value === 'today' && todayCount > 0 && <span className="badge">{todayCount}</span>}
           </button>
         ))}
       </div>

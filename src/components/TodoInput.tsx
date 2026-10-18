@@ -1,17 +1,21 @@
 import { useState, type FormEvent } from 'react';
+import { dueInfo, todayISO } from '../utils/date';
+import { CalendarIcon, DueDatePicker } from './DueDatePicker';
 
 interface Props {
-  onAdd: (text: string) => void;
+  onAdd: (text: string, dueDate?: string) => void;
 }
 
 export function TodoInput({ onAdd }: Props) {
   const [text, setText] = useState('');
+  const [dueDate, setDueDate] = useState<string | undefined>();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
-    onAdd(text);
+    onAdd(text, dueDate);
     setText('');
+    setDueDate(undefined);
   };
 
   return (
@@ -24,6 +28,16 @@ export function TodoInput({ onAdd }: Props) {
         aria-label="New task"
         autoFocus
       />
+      <DueDatePicker
+        value={dueDate}
+        onChange={setDueDate}
+        label="Due date for new task"
+        title="Set a due date"
+        className={`input-date${dueDate ? ' has-value' : ''}`}
+      >
+        <CalendarIcon size={18} />
+        {dueDate && <span>{dueInfo(dueDate, todayISO()).label}</span>}
+      </DueDatePicker>
       <button type="submit" className="btn-primary" disabled={!text.trim()}>
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
           <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />

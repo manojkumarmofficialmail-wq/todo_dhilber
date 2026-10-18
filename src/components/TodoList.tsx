@@ -3,12 +3,14 @@ import { TodoItem } from './TodoItem';
 
 interface Props {
   todos: Todo[];
+  emptyHint: string;
   onToggle: (id: string) => void;
   onEdit: (id: string, text: string) => void;
+  onSetDue: (id: string, dueDate?: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function TodoList({ todos, onToggle, onEdit, onDelete }: Props) {
+export function TodoList({ todos, emptyHint, onToggle, onEdit, onSetDue, onDelete }: Props) {
   if (todos.length === 0) {
     return (
       <div className="empty">
@@ -23,7 +25,7 @@ export function TodoList({ todos, onToggle, onEdit, onDelete }: Props) {
           />
         </svg>
         <p>Nothing here.</p>
-        <span>Add a task above to get started.</span>
+        <span>{emptyHint}</span>
       </div>
     );
   }
@@ -36,6 +38,7 @@ export function TodoList({ todos, onToggle, onEdit, onDelete }: Props) {
           todo={todo}
           onToggle={onToggle}
           onEdit={onEdit}
+          onSetDue={onSetDue}
           onDelete={onDelete}
         />
       ))}
