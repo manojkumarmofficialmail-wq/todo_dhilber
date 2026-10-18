@@ -10,7 +10,22 @@ interface Props {
 
 export function TodoList({ todos, onToggle, onEdit, onDelete }: Props) {
   if (todos.length === 0) {
-    return <p className="empty">Nothing here.</p>;
+    return (
+      <div className="empty">
+        <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true">
+          <path
+            d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        <p>Nothing here.</p>
+        <span>Add a task above to get started.</span>
+      </div>
+    );
   }
 
   return (
